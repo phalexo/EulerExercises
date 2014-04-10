@@ -1,0 +1,70 @@
+#!/usr/bin/env python
+"""
+3-smooth numbers problem
+Euler 462
+
+Disregard, still not finished
+
+By: A.O.
+
+"""
+
+import sys
+import os
+import string
+import math
+import itertools
+
+
+def S(N):
+  sum = 0
+  for n in range(int(math.log(N, 2)) + 1):
+    sum += int(math.log(N, 3) + 1)
+    N >>= 1
+  return sum
+
+
+def main(argv):
+  try:
+
+    print "S(N) = %d\n" % S(20)
+    print "S(N) = %d\n" % S(1000)
+    remainder, limit = 20, 20
+    count = 0
+    invalid = 0
+    sum = S(20)
+    powers2 = int(math.log(limit,2))  + 1
+    perms = []
+    for pOf2 in range(powers2):
+      powers3 = int(math.log(remainder,3)) + 1
+      print math.factorial(pOf2)*math.factorial(powers3-1)
+      #invalid += (powers2*powers3 - 1)
+      for pOf3 in range(powers3):
+        print "%d, %d, %d, %d, count = %d\n" % (pOf2, pOf3, 2**pOf2 * 3**pOf3, (1+pOf2)*(1+pOf3) - 1, count)
+        #perms.append(2**pOf2 * 3**pOf3)
+        invalid += math.factorial(sum-count)*((1+pOf2)*(1+pOf3) -1)*math.factorial(count)
+
+        count += 1
+      remainder >>= 1
+    #print perms
+    print "Invalid %d, count %d" % (invalid, count)
+
+    #print (str(math.factorial(10)-45*math.factorial(8)))
+    return None
+    for p in itertools.permutations(perms,len(perms)):
+      count += 1
+      l = list(p)
+      for smooth3 in l:
+        lowerSlice = l[:p.index(smooth3)]
+        #print lowerSlice
+        if (sum([1 for x in lowerSlice if (x % smooth3) == 0]) > 0):
+          #print "Bad perm: smooth3 is %d, sum is %d\n" % (smooth3, sum([x % smooth3 for x in lowerSlice]))
+          count -= 1
+          break
+    #print perms
+
+  except "":
+    return None
+if __name__ == "__main__":
+  main(sys.argv)
+
