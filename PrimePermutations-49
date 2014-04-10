@@ -1,0 +1,60 @@
+#!/usr/bin/env python
+# isprime is from http://pythonism.wordpress.com/2008/05/04/looking-at-prime-numbers-in-python/
+def isprime(n):
+    n*=1.0
+    if n%2==0 and n!=2 or n%3==0 and n!=3:
+        return False
+    for b in range(1,int((n**0.5+1)/6.0+1)):
+        if n%(6*b-1)==0:
+            return False
+        if n %(6*b+1)==0:
+           return False
+    return True
+
+
+"""
+prime permutations problem
+Euler problem 49
+
+By: A.O.
+
+"""
+
+import sys
+import os
+import string
+import itertools
+from heapq import merge
+
+def main(argv):
+  try:
+
+    primes = list(merge([n for n in range(1001, 10000, 6) if isprime(n)],\
+                        [n for n in range(1003, 10000, 6) if isprime(n)]))
+    #print primes
+
+    for p in primes:
+      #permutations = [int(''.join(x)) for x in itertools.permutations(str(p),4)]
+      permutations = []
+      for x in itertools.permutations(str(p),4):
+        number = int(''.join(x))
+        if (number not in permutations):
+          permutations.append(number)
+      for perm in permutations:
+        if (perm > p and perm in primes):
+          diff = perm - p
+          last = perm + diff
+          if (last in primes and last in permutations):
+            print "Found %d,%d,%d" % (p, perm, last)
+            if (p != 1487):
+              return None
+          else:
+            continue
+        else:
+          continue
+
+  except "":
+    return None
+if __name__ == "__main__":
+  main(sys.argv)
+
