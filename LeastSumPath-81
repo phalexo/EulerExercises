@@ -1,0 +1,53 @@
+#!/usr/bin/python
+# Project Euler, problem 81
+# Note: statement of the problem appears ambiguous
+# By: A.O.
+
+import sys
+import math
+
+def main(argv):
+
+  try:
+    size = 80
+    matrix = {}
+
+    # Load in data, convert to integers
+    row = 0
+    for line in sys.stdin:
+      matrix[row] = [int(val) for val in (line.rstrip("\n").split(","))]
+      row += 1
+
+    #print matrix
+
+    for row in range(size):
+      for col in range(size):
+        # Nothing to check
+        if (row == 0 and col == 0):
+          pass
+
+        # Can only check to the left
+        elif (row == 0 and col > 0):
+          matrix[row][col] += matrix[row][col - 1]
+
+        # Can only check above
+        elif (col == 0 and row > 0):
+          matrix[row][col] += matrix[row - 1][col]
+
+        # See which of the paths, from above or left is less
+        else:
+          if (matrix[row-1][col] < matrix[row][col - 1]):
+            matrix[row][col] += matrix[row-1][col]
+          else:
+            matrix[row][col] += matrix[row][col - 1]
+
+    print "Shortest path = %d" % matrix[79][79]
+
+
+  except "end of file":
+      return None
+
+if __name__ == "__main__":
+  main(sys.argv)
+
+
